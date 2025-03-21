@@ -1,0 +1,31 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+import joblib
+import os
+
+# Load dataset (example: Titanic dataset)
+df = pd.read_csv("titanic_train.csv")
+
+# Select features and target variable
+X = df[["Pclass", "Age", "Fare"]]
+y = df["Survived"]
+
+# Handle missing values
+X.fillna(X.mean(), inplace=True)
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train logistic regression model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Create 'model' directory inside your project
+os.makedirs("model", exist_ok=True)
+
+# Save the trained model in 'model' folder
+joblib.dump(model, "model/logistic_regression.pkl")
+
+print("Model saved successfully!")
